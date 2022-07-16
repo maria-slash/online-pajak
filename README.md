@@ -5,7 +5,8 @@
 ```bash
 # install dependencies
 $ npm install
-
+# rename env
+$ cp env.example .env
 # serve with hot reload at localhost:3000
 $ npm run dev
 
