@@ -18,6 +18,9 @@ $ npm run start
 $ npm run generate
 ```
 
+notes: because of cors, I created proxy backend written in nodejs [clone this project](https://github.com/maria-slash/online-pajak-be).
+
+
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
 ## Special Directories
