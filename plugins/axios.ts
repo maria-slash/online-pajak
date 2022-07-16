@@ -2,6 +2,7 @@ import { Context } from '@nuxt/types'
 import { axiosService } from '~/api/service/axios-service'
 export default (ctx: Context) => {
   const { $axios } = ctx
+  $axios.defaults.baseURL = process.env.API_URL
 
   $axios.interceptors.request.use((config: any) => {
     config.headers = {

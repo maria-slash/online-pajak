@@ -220,11 +220,7 @@ import { Item } from '~/api/dto'
 
 @Component({
   computed: {
-    ...mapGetters({ itemsStore: 'getAllItems' }),
-    form (): VForm {
-      return this.$refs.form as VForm
-    }
-
+    ...mapGetters({ itemsStore: 'getAllItems' })
   }
 })
 class IndexPage extends Vue {
@@ -260,15 +256,17 @@ class IndexPage extends Vue {
     defaultSignatory: boolean;
   }[] = []
 
-  mounted () {
+  const formRef = ref<any>(null)
+
+  mounted() {
     this.fetchItems()
   }
 
-  async asyncDataProxy () {
+  async asyncDataProxy() {
     return _.pick(this, ['loading', 'items'])
   }
 
-  async fetchItems () {
+  async fetchItems() {
     try {
       await this.$store.dispatch('fetchItems', {})
       this.mapItems()
@@ -276,13 +274,13 @@ class IndexPage extends Vue {
     }
   }
 
-  close () {
+  close() {
     this.dialog = false
     this.reset()
     this.resetValidation()
   }
 
-  mapItems () {
+  mapItems() {
     this.items = this.$store.state.items.map((tax: any) => {
       const { statusTaxpayer, signatory, ...restOfItem } = tax
       return {
@@ -293,7 +291,7 @@ class IndexPage extends Vue {
     })
   }
 
-  editItem (item: Item) {
+  editItem(item: Item) {
     this.editedIndex = this.items.indexOf(item)
     this.item = Object.assign({}, item)
     this.item.statusTaxpayer = item.statusTaxpayer === STATUS.ACTIVE ? 'ACTIVE' : 'NOT_ACTIVE'
@@ -305,12 +303,12 @@ class IndexPage extends Vue {
     this.dialog = true
   }
 
-  checkNpwp (value: string) {
+  checkNpwp(value: string) {
     return /^-?\d+$/.test(value) && value.length === 15
   }
 
-  async save () {
-    this.form.validate()
+  async save() {
+    this.$refs.form.validate()
     const { id, npwp, ...restOfItem } = this.item
     const reg = /[.-]/g
     const newStr = npwp.replace(reg, '')
@@ -330,7 +328,7 @@ class IndexPage extends Vue {
     }
   }
 
-  setSnackBar (title: string, color: string) {
+  setSnackBar(title: string, color: string) {
     this.snackbar = true
     this.snackbarColor = color
     this.snackbarText = title
@@ -339,7 +337,7 @@ class IndexPage extends Vue {
     }, 500)
   }
 
-  reset () {
+  reset() {
     this.item = {
       id: '',
       name: '',
@@ -350,12 +348,12 @@ class IndexPage extends Vue {
     }
   }
 
-  resetValidation () {
-    this.form.resetValidation()
+  resetValidation() {
+    this.$refs.form.resetValidation()
   }
 }
 export default class extends mixins(IndexPage) {
-  async asyncData () {
+  async asyncData() {
     return await new IndexPage().asyncDataProxy()
   }
 }
